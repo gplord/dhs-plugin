@@ -34,7 +34,7 @@ function register_dhs_menus() {
 add_action( 'init', 'register_dhs_menus' );
 
 
-class dhs_split_text {
+class dhs_closereading {
 
     function __construct() {
         add_action('init',array($this,'create_post_type'));
@@ -78,7 +78,7 @@ class dhs_split_text {
             'query_var'           => true
         );
 
-        register_post_type( 'dhs_split_text', $args );
+        register_post_type( 'dhs_closereading', $args );
     }    
 
     function create_taxonomies() {
@@ -107,7 +107,7 @@ class dhs_split_text {
             'rewrite'           => array( 'slug' => 'type' ),
         );
 
-        register_taxonomy('dhs_split_text_type',array('dhs_split_text'),$args);
+        register_taxonomy('dhs_closereading_type',array('dhs_closereading'),$args);
 
         // Add a taxonomy like tags
         $labels = array(
@@ -139,16 +139,16 @@ class dhs_split_text {
             'rewrite'               => array( 'slug' => 'tag' ),
         );
 
-        register_taxonomy('dhs_split_text_tag','dhs_split_text',$args);
+        register_taxonomy('dhs_closereading_tag','dhs_closereading',$args);
     }
 
 }
-new dhs_split_text ();
+new dhs_closereading ();
 
 
-// Custom Shortcode for creating a Split-Text Viewer Section
+// Custom Shortcode for creating a Close Readings Viewer Section
 
-function splittext_shortcode ( $atts, $content = null ) {
+function closereading_shortcode ( $atts, $content = null ) {
     extract( shortcode_atts( array (
             "id" => '',
             "inline" => ''
@@ -163,7 +163,7 @@ function splittext_shortcode ( $atts, $content = null ) {
     }
 	return '<a id="{this}section-' . $atts['id'] . '" class="closereading-section' . $breakclass . '" data-this="{this}" data-other="#{other}section-' . $atts['id'] . '" title="Section: ' . $atts['id'] .'">' . $content . '</a>';
 }
-add_shortcode("splittext", "splittext_shortcode");
+add_shortcode("closereading", "closereading_shortcode");
 
 function imageframe_shortcode ( $atts, $content = null ) {
     extract( shortcode_atts( array (
@@ -238,9 +238,9 @@ function add_button() {
                 $posttype = $post->post_type;
             }
             
-            /* To Do: Make these two splittext buttons conditional to certain editor pages */
-            add_filter('mce_external_plugins', 'add_splittext_plugin');
-            add_filter('mce_buttons', 'register_splittext_button');
+            /* To Do: Make these two closereading buttons conditional to certain editor pages */
+            add_filter('mce_external_plugins', 'add_closereading_plugin');
+            add_filter('mce_buttons', 'register_closereading_button');
 
 			add_filter('mce_external_plugins', 'add_spacer_plugin');
 			add_filter('mce_buttons', 'register_spacer_button');
@@ -262,12 +262,12 @@ function add_button() {
         }
     }
  }
- function register_splittext_button($buttons) {
-    array_push($buttons, "splittext");
+ function register_closereading_button($buttons) {
+    array_push($buttons, "closereading");
     return $buttons;
  }
- function add_splittext_plugin($plugin_array) {
-    $plugin_array['splittext'] = get_bloginfo('stylesheet_directory').'/js/dhs-tinymce.js';
+ function add_closereading_plugin($plugin_array) {
+    $plugin_array['closereading'] = get_bloginfo('stylesheet_directory').'/js/dhs-tinymce.js';
     return $plugin_array;
  } 
  function register_spacer_button($buttons) {
