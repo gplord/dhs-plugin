@@ -146,6 +146,241 @@ class dhs_closereading {
 new dhs_closereading ();
 
 
+
+
+// BEGIN COLLECTION OBJECT ------------------------------------------------------------------------- //
+
+class dhs_collection {
+
+    function __construct() {
+        add_action('init',array($this,'create_post_type'));
+        add_action('init',array($this,'create_taxonomies'));
+    }
+
+    function create_post_type() {
+        $labels = array(
+            'name'               => 'Collections',
+            'singular_name'      => 'Collection',
+            'menu_name'          => 'Collections',
+            'name_admin_bar'     => 'Collection',
+            'add_new'            => 'Add New Item',
+            'add_new_item'       => 'Add New Collection',
+            'new_item'           => 'New Collection Item',
+            'edit_item'          => 'Edit Collection',
+            'view_item'          => 'View Collection',
+            'all_items'          => 'All Collections',
+            'search_items'       => 'Search Collections',
+            'parent_item_colon'  => 'Parent Collection',
+            'not_found'          => 'No Collections Found',
+            'not_found_in_trash' => 'No Collections Found in Trash'
+        );
+
+        $args = array(
+            'labels'              => $labels,
+            'public'              => true,
+            'exclude_from_search' => false,
+            'publicly_queryable'  => true,
+            'show_ui'             => true,
+            'show_in_nav_menus'   => true,
+            'show_in_menu'        => true,
+            'show_in_admin_bar'   => true,
+            'menu_position'       => 20,
+            'menu_icon'           => 'dashicons-category',
+            'capability_type'     => 'page',
+            'hierarchical'        => true,
+            'supports'            => array( 'page-attributes', 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
+            'has_archive'         => true,
+            'rewrite'             => array( 'slug' => 'collections' ),
+            'query_var'           => true
+        );
+
+        register_post_type( 'dhs_collection', $args );
+    }    
+
+    function create_taxonomies() {
+        
+        // Add a taxonomy like categories
+        $labels = array(
+            'name'              => 'Types',
+            'singular_name'     => 'Type',
+            'search_items'      => 'Search Types',
+            'all_items'         => 'All Types',
+            'parent_item'       => 'Parent Type',
+            'parent_item_colon' => 'Parent Type:',
+            'edit_item'         => 'Edit Type',
+            'update_item'       => 'Update Type',
+            'add_new_item'      => 'Add New Type',
+            'new_item_name'     => 'New Type Name',
+            'menu_name'         => 'Types',
+        );
+
+        $args = array(
+            'hierarchical'      => true,
+            'labels'            => $labels,
+            'show_ui'           => true,
+            'show_admin_column' => true,
+            'query_var'         => true,
+            'rewrite'           => array( 'slug' => 'type' ),
+        );
+
+        register_taxonomy('dhs_collection_type',array('dhs_collection'),$args);
+
+        // Add a taxonomy like tags
+        $labels = array(
+            'name'                       => 'Tags',
+            'singular_name'              => 'Tag',
+            'search_items'               => 'Tags',
+            'popular_items'              => 'Popular Tags',
+            'all_items'                  => 'All Tags',
+            'parent_item'                => null,
+            'parent_item_colon'          => null,
+            'edit_item'                  => 'Edit Tag',
+            'update_item'                => 'Update Tag',
+            'add_new_item'               => 'Add New Tag',
+            'new_item_name'              => 'New Tag Name',
+            'separate_items_with_commas' => 'Separate Tags with commas',
+            'add_or_remove_items'        => 'Add or remove Tag',
+            'choose_from_most_used'      => 'Choose from most used Tags',
+            'not_found'                  => 'No Tags found',
+            'menu_name'                  => 'Tags',
+        );
+
+        $args = array(
+            'hierarchical'          => false,
+            'labels'                => $labels,
+            'show_ui'               => true,
+            'show_admin_column'     => true,
+            'update_count_callback' => '_update_post_term_count',
+            'query_var'             => true,
+            'rewrite'               => array( 'slug' => 'tag' ),
+        );
+
+        register_taxonomy('dhs_collection_tag','dhs_collection',$args);
+    }
+
+}
+new dhs_collection ();
+
+// END COLLECTION OBJECT --------------------------------------------------------------------------- //
+
+
+
+
+// BEGIN BIOGRAPHY OBJECT ------------------------------------------------------------------------- //
+
+class dhs_biography {
+
+    function __construct() {
+        add_action('init',array($this,'create_post_type'));
+        add_action('init',array($this,'create_taxonomies'));
+    }
+
+    function create_post_type() {
+        $labels = array(
+            'name'               => 'Biographies',
+            'singular_name'      => 'Biography',
+            'menu_name'          => 'Biographies',
+            'name_admin_bar'     => 'Biography',
+            'add_new'            => 'Add New',
+            'add_new_item'       => 'Add New Biography',
+            'new_item'           => 'New Biography Item',
+            'edit_item'          => 'Edit Biography',
+            'view_item'          => 'View Biography',
+            'all_items'          => 'All Biographies',
+            'search_items'       => 'Search Biographies',
+            'parent_item_colon'  => 'Parent Biography',
+            'not_found'          => 'No Biographies Found',
+            'not_found_in_trash' => 'No Biographies Found in Trash'
+        );
+
+        $args = array(
+            'labels'              => $labels,
+            'public'              => true,
+            'exclude_from_search' => false,
+            'publicly_queryable'  => true,
+            'show_ui'             => true,
+            'show_in_nav_menus'   => true,
+            'show_in_menu'        => true,
+            'show_in_admin_bar'   => true,
+            'menu_position'       => 20,
+            'menu_icon'           => 'dashicons-id',
+            'capability_type'     => 'page',
+            'hierarchical'        => true,
+            'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt' ),
+            'has_archive'         => true,
+            'rewrite'             => array( 'slug' => 'biography' ),
+            'query_var'           => true
+        );
+
+        register_post_type( 'dhs_biography', $args );
+    }    
+
+    function create_taxonomies() {
+        
+        // Add a taxonomy like categories
+        $labels = array(
+            'name'              => 'Types',
+            'singular_name'     => 'Type',
+            'search_items'      => 'Search Types',
+            'all_items'         => 'All Types',
+            'parent_item'       => 'Parent Type',
+            'parent_item_colon' => 'Parent Type:',
+            'edit_item'         => 'Edit Type',
+            'update_item'       => 'Update Type',
+            'add_new_item'      => 'Add New Type',
+            'new_item_name'     => 'New Type Name',
+            'menu_name'         => 'Types',
+        );
+
+        $args = array(
+            'hierarchical'      => true,
+            'labels'            => $labels,
+            'show_ui'           => true,
+            'show_admin_column' => true,
+            'query_var'         => true,
+            'rewrite'           => array( 'slug' => 'type' ),
+        );
+
+        register_taxonomy('dhs_biography_type',array('dhs_biography'),$args);
+
+        // Add a taxonomy like tags
+        $labels = array(
+            'name'                       => 'Tags',
+            'singular_name'              => 'Tag',
+            'search_items'               => 'Tags',
+            'popular_items'              => 'Popular Tags',
+            'all_items'                  => 'All Tags',
+            'parent_item'                => null,
+            'parent_item_colon'          => null,
+            'edit_item'                  => 'Edit Tag',
+            'update_item'                => 'Update Tag',
+            'add_new_item'               => 'Add New Tag',
+            'new_item_name'              => 'New Tag Name',
+            'separate_items_with_commas' => 'Separate Tags with commas',
+            'add_or_remove_items'        => 'Add or remove Tag',
+            'choose_from_most_used'      => 'Choose from most used Tags',
+            'not_found'                  => 'No Tags found',
+            'menu_name'                  => 'Tags',
+        );
+
+        $args = array(
+            'hierarchical'          => false,
+            'labels'                => $labels,
+            'show_ui'               => true,
+            'show_admin_column'     => true,
+            'update_count_callback' => '_update_post_term_count',
+            'query_var'             => true,
+            'rewrite'               => array( 'slug' => 'tag' ),
+        );
+
+        register_taxonomy('dhs_biography_tag','dhs_biography',$args);
+    }
+
+}
+new dhs_biography ();
+
+// END BIOGRAPHY OBJECT --------------------------------------------------------------------------- //
+
 // Custom Shortcode for creating a Close Readings Viewer Section
 
 function closereading_shortcode ( $atts, $content = null ) {
