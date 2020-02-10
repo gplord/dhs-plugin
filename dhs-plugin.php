@@ -32,6 +32,17 @@ function register_dhs_menus() {
     );
 }
 add_action( 'init', 'register_dhs_menus' );
+add_action( 'init', 'rewrite_metadata_page' );
+//add_action( 'template_include', 'change_template' );
+
+function rewrite_metadata_page () {
+    add_rewrite_rule( '^the-page$', 'index.php?metadata=1', 'top' );
+
+    // if(get_transient( 'vpt_flush' )) {
+    //     delete_transient( 'vpt_flush' );
+    //     flush_rewrite_rules();
+    // }
+}
 
 
 class dhs_closereading {
@@ -380,6 +391,97 @@ class dhs_biography {
 new dhs_biography ();
 
 // END BIOGRAPHY OBJECT --------------------------------------------------------------------------- //
+
+// BEGIN FLASHMOB OBJECT -------------------------------------------------------------------------- //
+
+
+class dhs_flashmob {
+
+    function __construct() {
+        add_action('init',array($this,'create_post_type'));
+        add_action('init',array($this,'create_taxonomies'));
+    }
+    
+    function create_post_type() {
+        $labels = array(
+            'name'               => 'Flash Mob Entries',
+            'singular_name'      => 'Flash Mob Entry',
+            'menu_name'          => 'Flash Mob Entries',
+            'name_admin_bar'     => 'Flash Mob Entry',
+            'add_new'            => 'Add New',
+            'add_new_item'       => 'Add New Flash Mob Entry',
+            'new_item'           => 'New Flash Mob Entry Item',
+            'edit_item'          => 'Edit Flash Mob Entry',
+            'view_item'          => 'View Flash Mob Entry',
+            'all_items'          => 'All Flash Mob Entries',
+            'search_items'       => 'Search Flash Mob Entries',
+            'parent_item_colon'  => 'Parent Flash Mob Entry',
+            'not_found'          => 'No Flash Mob Entries Found',
+            'not_found_in_trash' => 'No Flash Mob Entries Found in Trash'
+        );
+    
+        $args = array(
+            'labels'              => $labels,
+            'public'              => true,
+            'exclude_from_search' => false,
+            'publicly_queryable'  => true,
+            'show_ui'             => true,
+            'show_in_nav_menus'   => true,
+            'show_in_menu'        => true,
+            'show_in_admin_bar'   => true,
+            'menu_position'       => 20,
+            'menu_icon'           => 'dashicons-groups',
+            'capability_type'     => 'post',
+            'hierarchical'        => true,
+            'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt' ),
+            'has_archive'         => true,
+            'rewrite'             => array( 'slug' => 'flashmob' ),
+            'query_var'           => true
+        );
+    
+        register_post_type( 'dhs_flashmob', $args );
+    }    
+    
+    function create_taxonomies() {
+        
+        // Add a taxonomy like tags
+        $labels = array(
+            'name'                       => 'Flashmob Tags',
+            'singular_name'              => 'Flashmob Tag',
+            'search_items'               => 'Flashmob Tags',
+            'popular_items'              => 'Popular Flashmob Tags',
+            'all_items'                  => 'All Flashmob Tags',
+            'parent_item'                => null,
+            'parent_item_colon'          => null,
+            'edit_item'                  => 'Edit Flashmob Tag',
+            'update_item'                => 'Update Flashmob Tag',
+            'add_new_item'               => 'Add New Flashmob Tag',
+            'new_item_name'              => 'New Flashmob Tag Name',
+            'separate_items_with_commas' => 'Separate Flashmob Tags with commas',
+            'add_or_remove_items'        => 'Add or remove Flashmob Tag',
+            'choose_from_most_used'      => 'Choose from most used Flashmob Tags',
+            'not_found'                  => 'No Flashmob Tags found',
+            'menu_name'                  => 'Flashmob Tags',
+        );
+    
+        $args = array(
+            'hierarchical'          => false,
+            'labels'                => $labels,
+            'show_ui'               => true,
+            'show_admin_column'     => true,
+            'update_count_callback' => '_update_post_term_count',
+            'query_var'             => true,
+            'rewrite'               => array( 'slug' => 'flashmob_tag' ),
+        );
+    
+        register_taxonomy('dhs_flashmob_tag','dhs_flashmob',$args);
+
+    }
+
+}
+new dhs_flashmob ();
+
+// END FLASHMOB OBJECT ---------------------------------------------------------------------------- //
 
 // Custom Shortcode for creating a Close Readings Viewer Section
 
